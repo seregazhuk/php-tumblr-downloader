@@ -1,0 +1,11 @@
+{
+    "require": {
+        "tumblr/tumblr": "^0.2.0",
+        "symfony/console": "^3.1"
+    },
+    "autoload": {
+    	"psr-4" : {
+    		"seregazhuk\\TumblrDownloader\\" : "src"    		
+    	}
+    }
+}
