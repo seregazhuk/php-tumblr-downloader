@@ -2,6 +2,7 @@
 
 namespace seregazhuk\TumblrDownloader;
 
+use stdClass;
 use Tumblr\API\Client;
 
 class Downloader 
