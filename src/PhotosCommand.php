@@ -4,6 +4,7 @@ namespace seregazhuk\TumblrDownloader;
 
 use seregazhuk\TumblrDownloader\Downloader;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -36,8 +37,13 @@ class PhotosCommand extends Command
         $message = 'Saving photos from ' . $blog;
         $output->writeLn("<info>$message</info>");
 
-        $this->downloader->photos($blog);
+        $progress = new ProgressBar($output);
 
-        $output->line('Finished.');
+        $this->downloader
+            ->setProgressBar($progress)
+            ->photos($blog);
+
+        $output->writeLn('');
+        $output->writeLn('Finished.');
     }
 }
