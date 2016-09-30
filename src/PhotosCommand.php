@@ -43,7 +43,9 @@ class PhotosCommand extends Command
             ->setProgressBar($progress)
             ->photos($blog);
 
+        $saved = $this->downloader->getTotalSaved();
+
         $output->writeLn('');
-        $output->writeLn('Finished.');
+        $output->writeLn("<comment>Finished. $saved photos saved. </comment>");
     }
 }

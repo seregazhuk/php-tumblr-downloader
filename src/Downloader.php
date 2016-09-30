@@ -19,6 +19,11 @@ class Downloader
 	protected $progress;
 
 	/**
+	 * @var int
+	 */
+	protected $totalSaved = 0;
+
+	/**
 	 * @var Client
 	 */
 	public function __construct(Client $client)
@@ -71,7 +76,9 @@ class Downloader
 	 */
 	protected function getTotalPosts($blogName)
 	{
-		return $this->client->getBlogPosts($blogName, ['type' => 'photo'])->total_posts;
+		return $this->client
+			->getBlogPosts($blogName, ['type' => 'photo'])
+			->total_posts;
 	}
 
 	/**
@@ -84,10 +91,12 @@ class Downloader
 	        $imageUrl = $photo->original_size->url;
 
 	        $path = $this->getSavePath($directory);
-	        file_put_contents(
-	            $path . basename($imageUrl), 
-	            file_get_contents($imageUrl)
-	        );
+	        // file_put_contents(
+	        //     $path . basename($imageUrl), 
+	        //     file_get_contents($imageUrl)
+	        // );
+
+	        $this->totalSaved ++;
 	    }
 	}
 
@@ -102,5 +111,13 @@ class Downloader
 		}
 
 		return $path;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getTotalSaved() 
+	{
+		return $this->totalSaved;
 	}
 }
