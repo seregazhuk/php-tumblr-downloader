@@ -1,0 +1,22 @@
+#! /usr/bin/env php
+
+<?php
+require 'vendor/autoload.php';
+
+use Tumblr\API\Client;
+use seregazhuk\TumblrDownloader\Downloader;
+use seregazhuk\TumblrDownloader\PhotosCommand;
+use Symfony\Component\Console\Application;
+
+$client = new Client(
+    'YourConsumerKey',
+    'YourConsumerSecret',
+    'YourToken',
+    'YourSecret'
+);
+
+$downloader = new Downloader($client);
+
+$app = new Application('Tumblr Downloader', '1.0');
+$app->add(new PhotosCommand($downloader));
+$app->run();
