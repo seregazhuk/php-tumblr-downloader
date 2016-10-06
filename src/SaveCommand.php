@@ -2,14 +2,13 @@
 
 namespace seregazhuk\TumblrDownloader;
 
-use seregazhuk\TumblrDownloader\Downloader;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class PhotosCommand extends Command
+class SaveCommand extends Command
 {
     /**
      * Downloader
@@ -25,7 +24,7 @@ class PhotosCommand extends Command
 
     public function configure()
     {
-        $this->setName('photos')
+        $this->setName('save')
             ->setDescription('save photos from a specified blog.')
             ->addArgument('blog', InputArgument::REQUIRED, 'Blog to save photos from.');
     }    
@@ -41,7 +40,7 @@ class PhotosCommand extends Command
 
         $this->downloader
             ->setProgressBar($progress)
-            ->photos($blog);
+            ->save($blog);
 
         $saved = $this->downloader->getTotalSaved();
 

@@ -4,9 +4,9 @@
 require 'vendor/autoload.php';
 
 use Tumblr\API\Client;
-use seregazhuk\TumblrDownloader\Downloader;
-use seregazhuk\TumblrDownloader\PhotosCommand;
 use Symfony\Component\Console\Application;
+use seregazhuk\TumblrDownloader\Downloader;
+use seregazhuk\TumblrDownloader\SaveCommand;
 
 $client = new Client(
     'YourConsumerKey',
@@ -18,5 +18,5 @@ $client = new Client(
 $downloader = new Downloader($client);
 
 $app = new Application('Tumblr Downloader', '1.0');
-$app->add(new PhotosCommand($downloader));
+$app->add(new SaveCommand($downloader));
 $app->run();

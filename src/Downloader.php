@@ -31,9 +31,10 @@ class Downloader
 		$this->client = $client;
 	}
 
-	/**
-	 * @param ProgressBar $progress
-	 */
+    /**
+     * @param ProgressBar $progress
+     * @return $this
+     */
 	public function setProgressBar(ProgressBar $progress) 
 	{
 		$this->progress = $progress;
@@ -44,7 +45,7 @@ class Downloader
 	/**
 	 * @var string $blogName
 	 */
-	public function photos($blogName)
+	public function save($blogName)
 	{
 	    $options = [
 	        'type' => 'photo',
@@ -52,10 +53,9 @@ class Downloader
 	        'offset' => 0
 	    ];
 
-	    $totalPosts = $this->getTotalPosts($blogName);
-	    $this->progress->start($totalPosts);
+        $this->startProgress($blogName);
 
-	    while(true) {
+        while(true) {
 	        $posts = $this->client->getBlogPosts($blogName, $options)->posts;
 	        if(empty($posts)) break;
 
@@ -67,8 +67,8 @@ class Downloader
 	        $options['offset'] += $options['limit'];
 	    }
 
-	    $this->progress->finish();
-	}
+        $this->stopProgress();
+    }
 
 	/**
 	 * @param string $blogName
@@ -91,18 +91,19 @@ class Downloader
 	        $imageUrl = $photo->original_size->url;
 
 	        $path = $this->getSavePath($directory);
-	        // file_put_contents(
-	        //     $path . basename($imageUrl), 
-	        //     file_get_contents($imageUrl)
-	        // );
+	         file_put_contents(
+	             $path . basename($imageUrl),
+	             file_get_contents($imageUrl)
+	         );
 
 	        $this->totalSaved ++;
 	    }
 	}
 
-	/**
-	 * @param string $directory
-	 */
+    /**
+     * @param string $directory
+     * @return string
+     */
 	protected function getSavePath($directory)
 	{
 		$path = 'photos' . DIRECTORY_SEPARATOR . $directory . DIRECTORY_SEPARATOR;
@@ -120,4 +121,23 @@ class Downloader
 	{
 		return $this->totalSaved;
 	}
+
+    /**
+     * @param $blogName
+     */
+    protected function startProgress($blogName)
+    {
+        if(!$this->progress) return;
+
+        $totalPosts = $this->getTotalPosts($blogName);
+
+        $this->progress->start($totalPosts);
+    }
+
+    protected function stopProgress()
+    {
+        if(!$this->progress) return;
+        
+        $this->progress->finish();
+    }
 }
