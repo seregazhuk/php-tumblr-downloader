@@ -4,7 +4,6 @@ namespace seregazhuk\TumblrDownloader;
 
 use stdClass;
 use Tumblr\API\Client;
-use Symfony\Component\Console\Helper\ProgressBar;
 
 class Downloader 
 {	
@@ -12,11 +11,6 @@ class Downloader
 	 * @var Client
 	 */
 	protected $client;
-
-	/**
-	 * @var ProgressBar 
-	 */
-	protected $progress;
 
 	/**
 	 * @var int
@@ -32,20 +26,10 @@ class Downloader
 	}
 
     /**
-     * @param ProgressBar $progress
-     * @return $this
+     * @var string $blogName
+     * @param callable $processCallback
      */
-	public function setProgressBar(ProgressBar $progress) 
-	{
-		$this->progress = $progress;
-
-		return $this;
-	}
-
-	/**
-	 * @var string $blogName
-	 */
-	public function save($blogName)
+	public function save($blogName, callable $processCallback = null)
 	{
 	    $options = [
 	        'type' => 'photo',
@@ -53,28 +37,25 @@ class Downloader
 	        'offset' => 0
 	    ];
 
-        $this->startProgress($blogName);
-
         while(true) {
 	        $posts = $this->client->getBlogPosts($blogName, $options)->posts;
 	        if(empty($posts)) break;
 
 	        foreach($posts as $post) {
 	            $this->saveImagesFromPost($post, $blogName);
-	            $this->progress->advance();
+
+                if($processCallback) $processCallback($post);
 	        }
 
 	        $options['offset'] += $options['limit'];
 	    }
-
-        $this->stopProgress();
     }
 
 	/**
 	 * @param string $blogName
 	 * @return integer
 	 */
-	protected function getTotalPosts($blogName)
+	public function getTotalPosts($blogName)
 	{
 		return $this->client
 			->getBlogPosts($blogName, ['type' => 'photo'])
@@ -121,23 +102,4 @@ class Downloader
 	{
 		return $this->totalSaved;
 	}
-
-    /**
-     * @param $blogName
-     */
-    protected function startProgress($blogName)
-    {
-        if(!$this->progress) return;
-
-        $totalPosts = $this->getTotalPosts($blogName);
-
-        $this->progress->start($totalPosts);
-    }
-
-    protected function stopProgress()
-    {
-        if(!$this->progress) return;
-        
-        $this->progress->finish();
-    }
 }

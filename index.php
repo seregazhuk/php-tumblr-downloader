@@ -14,4 +14,4 @@ $client = new Client(
 );
 
 $downloader = new Downloader($client);
-$downloader->photos('catsof.tumblr.com');
+$downloader->save('catsof.tumblr.com');

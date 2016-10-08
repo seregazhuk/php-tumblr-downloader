@@ -27,8 +27,13 @@ class SaveCommand extends Command
         $this->setName('save')
             ->setDescription('save photos from a specified blog.')
             ->addArgument('blog', InputArgument::REQUIRED, 'Blog to save photos from.');
-    }    
+    }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int|null|void
+     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $blog = $input->getArgument('blog');
@@ -38,11 +43,15 @@ class SaveCommand extends Command
 
         $progress = new ProgressBar($output);
 
+        $progress->start($this->downloader->getTotalPosts($blog));
         $this->downloader
             ->setProgressBar($progress)
-            ->save($blog);
+            ->save($blog, function() use ($progress) {
+                $progress->advance();
+            });
 
         $saved = $this->downloader->getTotalSaved();
+        $progress->finish();
 
         $output->writeLn('');
         $output->writeLn("<comment>Finished. $saved photos saved. </comment>");
