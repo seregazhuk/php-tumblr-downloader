@@ -39,13 +39,12 @@ class SaveCommand extends Command
         $blog = $input->getArgument('blog');
         
         $message = 'Saving photos from ' . $blog;
-        $output->writeLn("<info>$message</info>");
+        $output->writeln("<info>$message</info>");
 
         $progress = new ProgressBar($output);
 
         $progress->start($this->downloader->getTotalPosts($blog));
         $this->downloader
-            ->setProgressBar($progress)
             ->save($blog, function() use ($progress) {
                 $progress->advance();
             });
@@ -53,7 +52,7 @@ class SaveCommand extends Command
         $saved = $this->downloader->getTotalSaved();
         $progress->finish();
 
-        $output->writeLn('');
-        $output->writeLn("<comment>Finished. $saved photos saved. </comment>");
+        $output->writeln('');
+        $output->writeln("<comment>Finished. $saved photos saved. </comment>");
     }
 }

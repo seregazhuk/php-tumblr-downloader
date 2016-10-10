@@ -2,6 +2,7 @@
 
 <?php
 require 'vendor/autoload.php';
+$config = require 'config.php';
 
 use Tumblr\API\Client;
 use Symfony\Component\Console\Application;
@@ -9,10 +10,10 @@ use seregazhuk\TumblrDownloader\Downloader;
 use seregazhuk\TumblrDownloader\SaveCommand;
 
 $client = new Client(
-    'YourConsumerKey',
-    'YourConsumerSecret',
-    'YourToken',
-    'YourSecret'
+   $config['consumer_key'],
+   $config['consumer_secret'],
+   $config['token'],
+   $config['token_secret']
 );
 
 $downloader = new Downloader($client);
