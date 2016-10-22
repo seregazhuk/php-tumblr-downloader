@@ -31,14 +31,15 @@ class Downloader
      */
 	public function save($blogName, callable $processCallback = null)
 	{
-	    $options = [
-	        'type' => 'photo',
-	        'limit' => 20,
-	        'offset' => 0
-	    ];
+        $options = [
+            'type'   => 'photo',
+            'limit'  => 20,
+            'offset' => 0,
+        ];
 
         while(true) {
-	        $posts = $this->client->getBlogPosts($blogName, $options)->posts;
+	        $posts = $this->getPosts($blogName, $options);
+
 	        if(empty($posts)) break;
 
 	        foreach($posts as $post) {
@@ -93,6 +94,19 @@ class Downloader
 		}
 
 		return $path;
+	}
+
+    /**
+     * @param string $blogName
+     * @param array $options
+     * @return mixed
+     */
+    protected function getPosts($blogName, array $options)
+    {
+        return $this
+            ->client
+            ->getBlogPosts($blogName, $options)
+            ->posts;
 	}
 
 	/**
