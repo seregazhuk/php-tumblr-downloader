@@ -45,3 +45,9 @@ return [
     'token_secret'    => 'YourSecret',
 ];
 ```
+
+This command will start downloading images from `catsof.tumblr.com` blog:
+
+```bash
+$ ./tumblr-downloader save catsof.tumblr.com
+```
