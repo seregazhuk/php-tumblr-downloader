@@ -12,8 +12,6 @@ composer require seregazhuk/tumblr-downloader
 ### Script
 
 ```php
-<?php  
-
 require "vendor/autoload.php";
 
 use Tumblr\API\Client;
@@ -36,8 +34,6 @@ You can also use console command `tumblr-downloader` in your terminal. Setup you
 credentials in `config.php` file, and you are ready to go:
 
 ```php
-<?php
-
 return [
     'consumer_key'    => 'YourConsumerKey',
     'consumer_secret' => 'YourConsumerSecret',
