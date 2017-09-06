@@ -15,10 +15,12 @@ class SaveCommand extends Command
      */
     protected $downloader;
 
+    /**
+     * @param Downloader $downloader
+     */
     public function __construct(Downloader $downloader)
     {
         $this->downloader = $downloader;
-
         parent::__construct();
     }
 
