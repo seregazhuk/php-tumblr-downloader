@@ -1,8 +1,9 @@
 # PHP Tumblr Downloader
 
 ## Installation
+The recommended way to install this library is via [Composer](https://getcomposer.org). 
+[New to Composer?](https://getcomposer.org/doc/00-intro.md)
 
-Via composer:
 ```
 composer require seregazhuk/tumblr-downloader
 ```
